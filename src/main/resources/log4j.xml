@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <logger name="service" additivity="true">
+        <appender-ref ref="serviceAppender"/>
+    </logger>
+    <appender name="serviceAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="threshold" value="INFO"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="file" value="/Users/steven/workplace/playground/transaction-demo/logs/service.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p:%d{yyyy-MM-dd HH:mm:ss.SSS}[%M] %m %n"/>
+        </layout>
+    </appender>
+
+</log4j:configuration>

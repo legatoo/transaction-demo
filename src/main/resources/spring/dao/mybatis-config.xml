@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+    </settings>
+    <mappers>
+
+        <mapper resource="spring/dao/mapper/CouponPoolMapper.xml"/>
+        <mapper resource="spring/dao/mapper/UserPointHistoryMapper.xml"/>
+        <mapper resource="spring/dao/mapper/UserPointMapper.xml"/>
+        <mapper resource="spring/dao/mapper/UserRedeemHistoryMapper.xml"/>
+
+    </mappers>
+</configuration>
