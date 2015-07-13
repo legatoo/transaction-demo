@@ -1,6 +1,8 @@
 package com.springapp.mvc.service.impl;
 
+import com.springapp.mvc.dao.UserPointHistoryMapper;
 import com.springapp.mvc.dao.UserPointMapper;
+import com.springapp.mvc.dao.UserRedeemHistoryMapper;
 import com.springapp.mvc.domain.UserPoint;
 import com.springapp.mvc.domain.UserPointExample;
 import com.springapp.mvc.service.RedeemCouponService;
@@ -22,18 +24,27 @@ import java.util.List;
 @Service("redeemCouponService")
 public class RedeemCouponServiceImpl implements RedeemCouponService {
     private static final Logger SERVICE_LOG = LoggerFactory.getLogger("service");
+
     @Autowired
     public UserPointMapper userPointMapper;
+    @Autowired
+    public UserPointHistoryMapper userPointHistoryMapper;
+    @Autowired
+    public UserRedeemHistoryMapper userRedeemHistoryMapper;
 
     @Override
     @Transactional
     public boolean redeemCoupon(Integer userId) {
         UserPointExample example = new UserPointExample();
         example.createCriteria().andUserIdEqualTo(userId);
-        List<UserPoint> userPoint = userPointMapper.selectByExample(example);
+        List<UserPoint> userPoints = userPointMapper.selectByExample(example);
 
-        SERVICE_LOG.info("UserPoint is {}", userPoint.get(0));
+        SERVICE_LOG.info("UserPoint is {}", userPoints.get(0));
 
-        return userPoint.isEmpty();
+        UserPoint userPoint = userPoints.get(0);
+        userPoint.setPoints(userPoint.getPoints() - 100);
+        userPointMapper.updateByExample(userPoint, example);
+
+        return userPoints.isEmpty();
     }
 }
