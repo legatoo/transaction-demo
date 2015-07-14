@@ -7,7 +7,7 @@ package com.springapp.mvc.exception;
  * Date: 7/14/15
  * Time: 9:44 AM
  */
-public class MyDatabaseException extends RuntimeException {
+public class MyDatabaseException extends Exception {
     public MyDatabaseException(String msg) {
         super(msg);
     }

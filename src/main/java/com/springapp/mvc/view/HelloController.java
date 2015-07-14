@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.view;
 
 import com.springapp.mvc.exception.MyDatabaseException;
 import com.springapp.mvc.service.RedeemCouponService;

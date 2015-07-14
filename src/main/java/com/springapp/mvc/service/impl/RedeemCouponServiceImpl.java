@@ -43,8 +43,9 @@ public class RedeemCouponServiceImpl implements RedeemCouponService {
 
 
     @Override
-    @Transactional(rollbackFor = MyDatabaseException.class)
-    public String redeemCoupon(Integer userId){
+    @Transactional(rollbackFor = Exception.class)
+    public String redeemCoupon(Integer userId) throws MyDatabaseException{
+//        TransactionSynchronizationManager.setActualTransactionActive(true);
         UserPointExample example = new UserPointExample();
         example.createCriteria().andUserIdEqualTo(userId);
         List<UserPoint> userPoints = userPointMapper.selectByExample(example);

@@ -1,5 +1,7 @@
 package com.springapp.mvc.service;
 
+import com.springapp.mvc.exception.MyDatabaseException;
+
 /**
  * Author: Yang Yifan
  * MisId: yangyifan03
@@ -8,6 +10,6 @@ package com.springapp.mvc.service;
  * Time: 3:20 PM
  */
 public interface RedeemCouponService {
-    String redeemCoupon(Integer userId);
+    String redeemCoupon(Integer userId) throws MyDatabaseException;
 
 }

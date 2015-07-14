@@ -32,7 +32,6 @@
     <!--扫描mapper-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.springapp.mvc.dao" />
-        <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate"/>
     </bean>
 
 </beans>
