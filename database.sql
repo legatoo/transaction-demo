@@ -6,6 +6,8 @@ CREATE TABLE user_point (
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
+INSERT INTO `user_point` VALUES ('1', '668', '1', '400');
+
 CREATE TABLE user_point_history(
   id int(11) NOT NULL AUTO_INCREMENT,
   user_id int(11) unsigned NOT NULL,
