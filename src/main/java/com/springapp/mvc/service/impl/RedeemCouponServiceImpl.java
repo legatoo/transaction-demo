@@ -1,6 +1,8 @@
 package com.springapp.mvc.service.impl;
 
-import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.springapp.mvc.dao.CouponPoolMapper;
 import com.springapp.mvc.dao.UserPointHistoryMapper;
 import com.springapp.mvc.dao.UserPointMapper;
@@ -29,10 +31,17 @@ import java.util.List;
 public class RedeemCouponServiceImpl implements RedeemCouponService {
     private static final Logger SERVICE_LOG = LoggerFactory.getLogger("service");
 
-    private static Function<CouponPool, Byte> statusFunction  = new Function<CouponPool, Byte>() {
+    private static Predicate<CouponPool> noAvailableCoupons = new Predicate<CouponPool>() {
         @Override
-        public Byte apply(CouponPool input) {
-            return input.getStatus();
+        public boolean apply(CouponPool input) {
+            return input.getStatus() == 0;
+        }
+    };
+
+    private static Predicate<CouponPool> couponFilter = new Predicate<CouponPool>() {
+        @Override
+        public boolean apply(CouponPool input) {
+            return input.getStatus() == 1;
         }
     };
 
@@ -74,29 +83,21 @@ public class RedeemCouponServiceImpl implements RedeemCouponService {
         couponPoolExample.createCriteria().andStatusEqualTo((byte) 1);
         List<CouponPool> coupons = couponPoolMapper.selectByExample(couponPoolExample);
 
-        //这里应该要回滚了
-        if (coupons.isEmpty() || noCouponAvailable(coupons)) {
+        //假如Coupon的池子是空的，这里应该要回滚了
+        if (coupons.isEmpty() || Iterables.all(coupons, noAvailableCoupons )) {
             MyDatabaseException exception = new MyDatabaseException("Exception happened --> Rollback. Redeem failed.");
             SERVICE_LOG.error("Exception happens: {}", exception.getMessage());
             throw exception;
         }
 
-        CouponPool coupon = coupons.get(0);
+        //拿出可用的Coupon，单纯的用一下Guava啦
+        List<CouponPool> availableCoupons = ImmutableList.copyOf(Iterables.filter(coupons, couponFilter));
+        CouponPool coupon = availableCoupons.get(0);
         coupon.setStatus((byte) 0);
         coupon.setDate(new Date());
         couponPoolMapper.updateByPrimaryKey(coupon);
 
 
         return "Success Redeem A Coupon. Id: " + coupon.getCouponId();
-    }
-
-    private boolean noCouponAvailable(List<CouponPool> couponPools) {
-        assert !couponPools.isEmpty();
-        for (CouponPool coupon : couponPools) {
-            if (coupon.getStatus() == 1)
-                return false;
-        }
-
-        return true;
     }
 }

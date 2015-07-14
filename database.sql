@@ -6,7 +6,6 @@ CREATE TABLE user_point (
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-INSERT INTO `user_point` VALUES ('1', '668', '1', '400');
 
 CREATE TABLE user_point_history(
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -32,3 +31,7 @@ CREATE TABLE coupon_pool (
   `date` date NOT NULL,
   PRIMARY KEY(id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+INSERT INTO `user_point` VALUES ('1', '668', '1', '400');
+
+INSERT INTO `coupon_pool` VALUES ('1', '11236', '0', '2015-07-01'), ('2', '1597', '1', '2015-07-14'), ('3', '7539', '0', '2015-07-02'), ('4', '1235', '1', '2015-07-14');
