@@ -1,5 +1,6 @@
 package com.springapp.mvc;
 
+import com.springapp.mvc.exception.MyDatabaseException;
 import com.springapp.mvc.service.RedeemCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,11 @@ public class HelloController {
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
 
-        model.addAttribute("message", redeemCouponService.redeemCoupon(668));
+        try {
+            model.addAttribute("message", redeemCouponService.redeemCoupon(668));
+        } catch (MyDatabaseException e) {
+            model.addAttribute("message", e.getMessage());
+        }
         return "hello";
     }
 }

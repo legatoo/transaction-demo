@@ -8,6 +8,6 @@ package com.springapp.mvc.service;
  * Time: 3:20 PM
  */
 public interface RedeemCouponService {
-    boolean redeemCoupon(Integer userId);
+    String redeemCoupon(Integer userId);
 
 }
