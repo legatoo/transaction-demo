@@ -54,9 +54,15 @@ public class RedeemCouponServiceImpl implements RedeemCouponService {
     @Autowired
     public CouponPoolMapper couponPoolMapper;
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public String redeemCoupon(Integer userId) throws MyDatabaseException {
+    /**
+     * 一个简单的积分兑换代金券的事务：
+     * 需要减积分，兑换代金券，记录兑换记录
+     * @param userId
+     * @return
+     * @throws MyDatabaseException
+     */
+    @Transactional(rollbackForClassName = {"MyDatabaseException"})
+    @Override public String redeemCoupon(Integer userId) throws MyDatabaseException {
         //可以使用这个检查事务是否开启
         String.valueOf(TransactionSynchronizationManager.isActualTransactionActive());
 
@@ -66,8 +72,6 @@ public class RedeemCouponServiceImpl implements RedeemCouponService {
         UserPointExample example = new UserPointExample();
         example.createCriteria().andUserIdEqualTo(userId);
         List<UserPoint> userPoints = userPointMapper.selectByExample(example);
-
-        SERVICE_LOG.info("UserPoint is {}", userPoints.get(0));
 
         UserPoint userPoint = userPoints.get(0);
         userPoint.setPoints(userPoint.getPoints() - 100);
@@ -85,9 +89,8 @@ public class RedeemCouponServiceImpl implements RedeemCouponService {
 
         //假如Coupon的池子是空的，这里应该要回滚了
         if (coupons.isEmpty() || Iterables.all(coupons, noAvailableCoupons )) {
-            MyDatabaseException exception = new MyDatabaseException("Exception happened --> Rollback. Redeem failed.");
-            SERVICE_LOG.error("Exception happens: {}", exception.getMessage());
-            throw exception;
+            SERVICE_LOG.error("Coupon Poll is empty. Redeem failed, Rollback.");
+            throw new MyDatabaseException("Redeem failed. No available coupon.  --> Rollback. ");
         }
 
         //拿出可用的Coupon，单纯的用一下Guava啦

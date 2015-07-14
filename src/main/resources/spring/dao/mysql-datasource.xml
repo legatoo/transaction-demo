@@ -7,9 +7,9 @@
     <!--数据源的配置，这里是MySql-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://192.168.11.154:3306/test?autoReconnect=true" />
-        <property name="username" value="q3boy" />
-        <property name="password" value="123" />
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true" />
+        <property name="username" value="root" />
+        <property name="password" value="" />
     </bean>
 
 
